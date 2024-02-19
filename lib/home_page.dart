@@ -25,6 +25,7 @@ class _MyHomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.deepOrange[400],
         actions: [
           IconButton(
               icon: Icon(Icons.exit_to_app),

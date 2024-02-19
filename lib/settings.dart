@@ -14,8 +14,8 @@ class SettingsPage extends ConsumerStatefulWidget {
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
 
-  double voiceVolume = 50;
-  bool isVoiceMute = false;
+  //double voiceVolume = 50;
+  //bool isVoiceMute = false;
   double voicePause = 3;
 
   double backgroundVolume = 50;
@@ -24,8 +24,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   void initState() {
 
-    voiceVolume = ref.read(settingsProviderVoiceVolume).voiceVolume.toDouble();
-    isVoiceMute = ref.read(settingsProviderIsVoiceMute).isVoiceMute;
+    //voiceVolume = ref.read(settingsProviderVoiceVolume).voiceVolume.toDouble();
+    //isVoiceMute = ref.read(settingsProviderIsVoiceMute).isVoiceMute;
     voicePause = ref.read(settingsProviderVoicePause).voicePause.toDouble();
 
     backgroundVolume = ref.read(settingsProviderBackgroundVolume).backgroundVolume.toDouble();
@@ -37,6 +37,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    double voiceVolume = ref.watch(settingsProviderVoiceVolume).voiceVolume.toDouble();
+    bool isVoiceMute = ref.watch(settingsProviderIsVoiceMute).isVoiceMute;
 
     return Container(
       height: 300,
@@ -124,12 +127,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     label: "${voiceVolume.round()}%",
                     onChanged: (double value)  async {
 
-                      setState(() {
-                        voiceVolume = value;
-                        isVoiceMute = false;
-                      });
+                      //setState(() {
+                      //  voiceVolume = value;
+                      //  isVoiceMute = false;
+                      //});
 
-                      ref.refresh(settingsProviderVoiceVolume).voiceVolume = voiceVolume.round();
+                      ref.refresh(settingsProviderVoiceVolume).voiceVolume = value.round();
+                      ref.refresh(settingsProviderIsVoiceMute).isVoiceMute = false;
 
                       final double voice_volume = (isVoiceMute) ? 0 : value/100;
                       await flutterTts.setVolume(voice_volume);
@@ -145,13 +149,13 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   Icons.volume_up_outlined),
                   onPressed: () async {
 
-                    setState(() {
-                      isVoiceMute = !isVoiceMute;
-                    });
+                    //setState(() {
+                    //  isVoiceMute = !isVoiceMute;
+                    //});
 
-                    ref.refresh(settingsProviderIsVoiceMute).isVoiceMute = isVoiceMute;
+                    ref.refresh(settingsProviderIsVoiceMute).isVoiceMute = !isVoiceMute;
 
-                    final double voice_volume = (isVoiceMute) ? 0 : voiceVolume/100;
+                    final double voice_volume = (!isVoiceMute) ? 0 : voiceVolume/100;
                     await flutterTts.setVolume( voice_volume);
 
                   },
